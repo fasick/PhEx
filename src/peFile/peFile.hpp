@@ -3,9 +3,24 @@
 class PEFile
 {
 private:
-    size_t file_size;
+    SIZE_T cbFile;
+    PBYTE pFileContents;
+    PWCHAR pwcFilePath;
     PIMAGE_DOS_HEADER pDOSHeader;
     PIMAGE_NT_HEADERS pNTHeader;
+    PIMAGE_FILE_HEADER pFileHeader;
+    PIMAGE_OPTIONAL_HEADER pOptHeader;
+
+    VOID init(_In_ PWCHAR pwcFilePath);
+
 public:
-    PEFile();
+    // constructos & destructor
+    PEFile(_In_ PCHAR pcFilePath);
+    PEFile(_In_ PWCHAR pwcFilePath);
+    ~PEFile(VOID);
+
+    // getters/setters
+    HRESULT getDOSHeader(_Out_ PIMAGE_DOS_HEADER pDOSHeader);
+    HRESULT setDOSHeader(VOID);
+
 };
