@@ -6,6 +6,7 @@ private:
     SIZE_T cbFile;
     PBYTE pFileContents;
     PWCHAR pwcFilePath;
+    HANDLE hFile;
     PIMAGE_DOS_HEADER pDOSHeader;
     PIMAGE_NT_HEADERS pNTHeader;
     PIMAGE_FILE_HEADER pFileHeader;
