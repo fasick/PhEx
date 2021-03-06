@@ -129,7 +129,23 @@ VOID PEFile::init(_In_ PWCHAR pwcFilePath)
         throw std::exception("Failed to read file contents.\n");
     }
 
-    // printf("First byte of data from notepad.exe: %#x\n", *(this->pFileContents));
+    // setup the rest of our pointers
+    this->pDOSHeader = (PIMAGE_DOS_HEADER)this->pFileContents;
+    this->pNTHeader = (PIMAGE_NT_HEADERS)((PBYTE)this->pDOSHeader + (DWORD)this->pDOSHeader->e_lfanew);
+    this->pFileHeader = (PIMAGE_FILE_HEADER)(&this->pNTHeader->FileHeader);
+    this->pOptHeader = (PIMAGE_OPTIONAL_HEADER)(&this->pNTHeader->OptionalHeader);
+    
+#ifdef VERBOSE
+    printf("First byte of data from notepad.exe: %#x\n", *(this->pFileContents));
+    printf("address of pDOSHeader: %p\n", this->pDOSHeader);
+    printf("pDOSHeader->e_lfanew: %#x\n", (this->pDOSHeader->e_lfanew));
+    printf("address of pNTHeader: %p\n", this->pNTHeader);
+    printf("first byte of NTHeader: %#x\n", *(PBYTE)(this->pNTHeader));
+    printf("address of pFileHeader: %p\n", this->pFileHeader);
+    printf("first byte of fileHeader: 0x%04x\n", *(PSHORT)(this->pFileHeader));
+    printf("address of pOptHeader: %p\n", this->pOptHeader);
+    printf("first byte of OptHeader: 0x%04x\n", *(PSHORT)(this->pOptHeader));
+#endif
 }
 
 PEFile::~PEFile(VOID)
